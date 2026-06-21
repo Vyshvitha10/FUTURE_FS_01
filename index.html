@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vyshvitha Ananthula — Software Developer</title>
+<meta name="description" content="Portfolio of Vyshvitha Ananthula, B.Tech CS student building games, tools, and cross-platform apps in Java, Python, and JavaScript.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0D1117;
+    --surface:#12181F;
+    --surface-2:#161D26;
+    --line:#22303C;
+    --text:#E6EDF3;
+    --text-dim:#8B9BAA;
+    --accent:#5EEAD4;
+    --accent-dim:#2E6F66;
+    --amber:#F2B85C;
+    --mono:'JetBrains Mono', monospace;
+    --sans:'Inter', sans-serif;
+    --maxw:1040px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(rgba(94,234,212,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(94,234,212,0.025) 1px, transparent 1px);
+    background-size:42px 42px;
+    pointer-events:none;
+    z-index:0;
+  }
+  a{color:inherit;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px; position:relative; z-index:1;}
+  ::selection{background:var(--accent); color:#0D1117;}
+
+  /* Scrollbar */
+  ::-webkit-scrollbar{width:10px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:var(--line); border-radius:5px;}
+
+  /* NAV */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(13,17,23,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex; align-items:center; justify-content:space-between; height:62px;}
+  .logo{font-family:var(--mono); font-weight:700; font-size:15px; letter-spacing:0.5px;}
+  .logo span{color:var(--accent);}
+  .navlinks{display:flex; gap:28px; list-style:none; font-family:var(--mono); font-size:13px;}
+  .navlinks a{color:var(--text-dim); text-decoration:none; transition:color .2s;}
+  .navlinks a:hover{color:var(--accent);}
+  .navlinks .num{color:var(--accent); margin-right:4px;}
+  .navtoggle{display:none; background:none; border:1px solid var(--line); color:var(--text); font-family:var(--mono); padding:6px 10px; border-radius:4px;}
+
+  /* HERO */
+  .hero{padding:96px 0 80px;}
+  .term{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);
+  }
+  .term-bar{
+    display:flex; align-items:center; gap:8px;
+    padding:11px 16px;
+    background:var(--surface-2);
+    border-bottom:1px solid var(--line);
+  }
+  .dot{width:11px; height:11px; border-radius:50%;}
+  .dot.r{background:#FF5F56;} .dot.y{background:#FFBD2E;} .dot.g{background:#27C93F;}
+  .term-title{margin-left:10px; font-family:var(--mono); font-size:12px; color:var(--text-dim);}
+  .term-body{padding:32px 28px 36px; font-family:var(--mono); font-size:15px;}
+  .term-line{color:var(--text-dim); margin-bottom:6px;}
+  .term-line .prompt{color:var(--accent);}
+  .term-out{margin:6px 0 22px;}
+  .hero-name{
+    font-family:var(--mono);
+    font-weight:800;
+    font-size:clamp(32px, 6vw, 56px);
+    line-height:1.1;
+    color:var(--text);
+  }
+  .hero-name .blink{display:inline-block; width:0.5em; background:var(--accent); animation:blink 1s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0;}}
+  .hero-role{
+    font-family:var(--mono); color:var(--amber); font-size:clamp(14px,2.2vw,18px); margin-top:10px;
+  }
+  .hero-desc{
+    margin-top:18px; color:var(--text-dim); max-width:560px; font-size:15px;
+  }
+  .hero-cta{margin-top:28px; display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{
+    font-family:var(--mono); font-size:13px; padding:11px 20px; border-radius:6px;
+    text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    border:1px solid var(--line); transition:all .2s;
+  }
+  .btn-primary{background:var(--accent); color:#0D1117; border-color:var(--accent); font-weight:700;}
+  .btn-primary:hover{background:#7FF3DF;}
+  .btn-ghost{color:var(--text); }
+  .btn-ghost:hover{border-color:var(--accent); color:var(--accent);}
+
+  section{padding:80px 0; border-top:1px solid var(--line); position:relative;}
+  .eyebrow{
+    font-family:var(--mono); color:var(--accent); font-size:13px; letter-spacing:1px;
+    display:flex; align-items:center; gap:10px; margin-bottom:14px;
+  }
+  .eyebrow::before{content:"//"; color:var(--text-dim);}
+  h2.sec-title{
+    font-family:var(--mono); font-size:clamp(24px,4vw,34px); font-weight:700; margin-bottom:36px;
+  }
+
+  /* ABOUT */
+  .about-grid{display:grid; grid-template-columns:1.3fr 1fr; gap:48px; align-items:start;}
+  .about-text p{color:var(--text-dim); margin-bottom:16px; font-size:15.5px;}
+  .about-text strong{color:var(--text);}
+  .fact-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:22px;
+  }
+  .fact-row{display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--line); font-size:14px;}
+  .fact-row:last-child{border-bottom:none;}
+  .fact-k{color:var(--text-dim); font-family:var(--mono);}
+  .fact-v{color:var(--text); text-align:right; font-weight:500;}
+
+  /* SKILLS */
+  .skills-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px;}
+  .skill-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:20px;
+    transition:transform .2s, border-color .2s;
+  }
+  .skill-card:hover{transform:translateY(-3px); border-color:var(--accent-dim);}
+  .skill-card h3{font-family:var(--mono); font-size:13px; color:var(--amber); margin-bottom:12px; letter-spacing:.5px;}
+  .tag-row{display:flex; flex-wrap:wrap; gap:8px;}
+  .tag{
+    font-family:var(--mono); font-size:12px; padding:5px 10px; border-radius:5px;
+    background:var(--surface-2); border:1px solid var(--line); color:var(--text-dim);
+  }
+
+  /* PROJECTS */
+  .proj-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(290px,1fr)); gap:20px;}
+  .proj-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:10px;
+    padding:24px; display:flex; flex-direction:column; gap:14px;
+    transition:transform .2s, border-color .2s, box-shadow .2s;
+  }
+  .proj-card:hover{transform:translateY(-4px); border-color:var(--accent); box-shadow:0 14px 30px -14px rgba(94,234,212,0.25);}
+  .proj-top{display:flex; justify-content:space-between; align-items:flex-start;}
+  .proj-name{font-family:var(--mono); font-size:16px; font-weight:700;}
+  .proj-lang{font-family:var(--mono); font-size:11px; color:var(--accent); border:1px solid var(--accent-dim); padding:3px 8px; border-radius:4px; white-space:nowrap;}
+  .proj-desc{color:var(--text-dim); font-size:14px; flex-grow:1;}
+  .proj-link{font-family:var(--mono); font-size:13px; color:var(--text); text-decoration:none; display:inline-flex; align-items:center; gap:6px;}
+  .proj-link:hover{color:var(--accent);}
+
+  /* EDUCATION / CERTS */
+  .timeline{display:flex; flex-direction:column; gap:0;}
+  .tl-item{
+    display:grid; grid-template-columns:140px 1fr; gap:20px; padding:20px 0; border-bottom:1px solid var(--line);
+  }
+  .tl-item:last-child{border-bottom:none;}
+  .tl-meta{font-family:var(--mono); color:var(--accent); font-size:13px;}
+  .tl-title{font-weight:600; margin-bottom:4px;}
+  .tl-sub{color:var(--text-dim); font-size:14px;}
+
+  .cert-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:22px; margin-top:18px;
+  }
+  .cert-card .tl-meta{margin-bottom:6px;}
+
+  /* CONTACT */
+  .contact-box{
+    background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:42px;
+    display:grid; grid-template-columns:1fr 1fr; gap:40px;
+  }
+  .contact-left p{color:var(--text-dim); margin-top:10px; font-size:15px; max-width:340px;}
+  .contact-list{margin-top:24px; display:flex; flex-direction:column; gap:14px;}
+  .contact-list a{
+    font-family:var(--mono); font-size:14px; text-decoration:none; color:var(--text);
+    display:flex; align-items:center; gap:10px;
+  }
+  .contact-list a:hover{color:var(--accent);}
+  .contact-list .ic{color:var(--accent); width:16px;}
+
+  form{display:flex; flex-direction:column; gap:14px;}
+  label{font-family:var(--mono); font-size:12px; color:var(--text-dim);}
+  input, textarea{
+    width:100%; background:var(--surface-2); border:1px solid var(--line); color:var(--text);
+    padding:11px 13px; border-radius:6px; font-family:var(--sans); font-size:14px; resize:vertical;
+  }
+  input:focus, textarea:focus{outline:none; border-color:var(--accent);}
+  .field{display:flex; flex-direction:column; gap:6px;}
+  .submit-btn{
+    margin-top:6px; background:var(--accent); color:#0D1117; border:none; padding:12px 20px;
+    font-family:var(--mono); font-weight:700; font-size:13px; border-radius:6px; cursor:pointer; transition:background .2s;
+  }
+  .submit-btn:hover{background:#7FF3DF;}
+  .form-note{font-size:12px; color:var(--text-dim); margin-top:-4px;}
+
+  footer{padding:32px 0; text-align:center; color:var(--text-dim); font-family:var(--mono); font-size:13px; border-top:1px solid var(--line);}
+  footer a{color:var(--accent); text-decoration:none;}
+
+  @media (max-width:760px){
+    .navlinks{display:none;}
+    .about-grid{grid-template-columns:1fr;}
+    .contact-box{grid-template-columns:1fr; padding:26px;}
+    .term-body{font-size:13px; padding:24px 18px 28px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">vyshvitha<span>.dev</span></div>
+    <ul class="navlinks">
+      <li><a href="#about"><span class="num">01.</span>about</a></li>
+      <li><a href="#skills"><span class="num">02.</span>skills</a></li>
+      <li><a href="#projects"><span class="num">03.</span>projects</a></li>
+      <li><a href="#education"><span class="num">04.</span>education</a></li>
+      <li><a href="#contact"><span class="num">05.</span>contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="term">
+      <div class="term-bar">
+        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+        <div class="term-title">vyshvitha@dev — zsh</div>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="prompt">$</span> whoami</div>
+        <div class="hero-name">Vyshvitha<br>Ananthula<span class="blink">&nbsp;</span></div>
+        <div class="hero-role">B.Tech CS student · Java / Python / JS developer</div>
+        <p class="hero-desc">I build small, working things — puzzle games, console banking systems, cross-platform desktop apps — and use them to get better at structuring real software. Currently sharpening Data Structures &amp; Algorithms while exploring full-stack web development.</p>
+        <div class="hero-cta">
+          <a href="#projects" class="btn btn-primary">view projects →</a>
+          <a href="https://github.com/Vyshvitha10" target="_blank" rel="noopener" class="btn btn-ghost">github ↗</a>
+          <a href="#contact" class="btn btn-ghost">get in touch</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="eyebrow">about</div>
+    <h2 class="sec-title">Who I am</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I'm a <strong>B.Tech Computer Science</strong> student at Amrita Vishwa Vidyapeetham, Coimbatore, with a strong foundation in Java, Python, and web development. Over the past few years I've shipped <strong>6+ hands-on projects</strong> spanning game development, data structures, and cross-platform desktop applications.</p>
+        <p>I like problems with a clear, testable shape: a puzzle game whose rules have to be airtight, a banking system whose balances can never drift, a bloom filter that has to be fast and correct at the same time. That's also why I'm currently deep in <strong>Data Structures &amp; Algorithms</strong> — it's the foundation under everything else I want to build.</p>
+        <p>Outside of code, I'm an active member of <strong>NSS</strong> (community service) and <strong>TeamMedia</strong>, the multimedia club on campus, where I shoot and edit photo/video content. I also sing — it's the other place I care about getting the details right.</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-row"><span class="fact-k">role</span><span class="fact-v">CS Undergraduate</span></div>
+        <div class="fact-row"><span class="fact-k">focus</span><span class="fact-v">DSA · Full-Stack Web</span></div>
+        <div class="fact-row"><span class="fact-k">cgpa</span><span class="fact-v">7.9</span></div>
+        <div class="fact-row"><span class="fact-k">location</span><span class="fact-v">Telangana, India</span></div>
+        <div class="fact-row"><span class="fact-k">os</span><span class="fact-v">Ubuntu / Windows</span></div>
+        <div class="fact-row"><span class="fact-k">status</span><span class="fact-v">Open to internships</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="eyebrow">stack</div>
+    <h2 class="sec-title">Skills &amp; tools</h2>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <h3>LANGUAGES</h3>
+        <div class="tag-row">
+          <span class="tag">Python</span><span class="tag">Java</span><span class="tag">C</span>
+          <span class="tag">JavaScript</span><span class="tag">SQL</span><span class="tag">Haskell</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>WEB &amp; FRAMEWORKS</h3>
+        <div class="tag-row">
+          <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">Electron.js</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>TOOLS &amp; IDEs</h3>
+        <div class="tag-row">
+          <span class="tag">GitHub</span><span class="tag">VS Code</span><span class="tag">Eclipse</span>
+          <span class="tag">Code::Blocks</span><span class="tag">Notepad++</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>SYSTEMS</h3>
+        <div class="tag-row">
+          <span class="tag">Linux (Ubuntu)</span><span class="tag">Windows</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>ALSO INTO</h3>
+        <div class="tag-row">
+          <span class="tag">Photography</span><span class="tag">Video Editing</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="eyebrow">work</div>
+    <h2 class="sec-title">Projects</h2>
+    <div class="proj-grid">
+
+      <div class="proj-card">
+        <div class="proj-top"><span class="proj-name">Unruly Game</span><span class="proj-lang">Java</span></div>
+        <p class="proj-desc">Interactive logic-based puzzle game inspired by Simon Tatham's Puzzle Collection. Built around airtight rule enforcement and clean state handling.</p>
+        <a class="proj-link" href="https://github.com/Vyshvitha10/Unruly_Eval3" target="_blank" rel="noopener">view repo ↗</a>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-top"><span class="proj-name">Small Scale Banking System</span><span class="proj-lang">Python</span></div>
+        <p class="proj-desc">Console-based banking system handling deposits, withdrawals, and balance enquiries with consistent, drift-free state.</p>
+        <a class="proj-link" href="https://github.com/Vyshvitha10/small-scale-banking-system.git" target="_blank" rel="noopener">view repo ↗</a>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-top"><span class="proj-name">Bookstore Desktop App</span><span class="proj-lang">Electron.js</span></div>
+        <p class="proj-desc">Cross-platform desktop bookstore application with a responsive UI, built with JavaScript, HTML/CSS, and Electron.js.</p>
+        <a class="proj-link" href="https://github.com/Vyshvitha10/Bookstore-website-.git" target="_blank" rel="noopener">view repo ↗</a>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-top"><span class="proj-name">Adventure Game</span><span class="proj-lang">Java · OOP</span></div>
+        <p class="proj-desc">Console-based text adventure with decision-tree progression, structured around object-oriented design principles.</p>
+        <a class="proj-link" href="https://github.com/Vyshvitha10/Adventure_Game-java.git" target="_blank" rel="noopener">view repo ↗</a>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-top"><span class="proj-name">Bloom Filter</span><span class="proj-lang">Python</span></div>
+        <p class="proj-desc">Probabilistic data structure for fast membership checks, implemented from scratch using multiple hash functions.</p>
+        <a class="proj-link" href="https://github.com/Vyshvitha10/Bloom-Filter.git" target="_blank" rel="noopener">view repo ↗</a>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-top"><span class="proj-name">Smart Home Automation</span><span class="proj-lang">C</span></div>
+        <p class="proj-desc">Menu-driven CLI simulation of home appliance automation, written with structured programming in C.</p>
+        <a class="proj-link" href="https://github.com/Vyshvitha10/Smarthome-Automation-System.git" target="_blank" rel="noopener">view repo ↗</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="eyebrow">background</div>
+    <h2 class="sec-title">Education &amp; certifications</h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-meta">CGPA 7.9</div>
+        <div>
+          <div class="tl-title">B.Tech in Computer Science</div>
+          <div class="tl-sub">Amrita Vishwa Vidyapeetham, Coimbatore, Tamil Nadu</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-meta">961 / 1000</div>
+        <div>
+          <div class="tl-title">Intermediate (MPC)</div>
+          <div class="tl-sub">Turito Junior College, Hyderabad, Telangana</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-meta">90%</div>
+        <div>
+          <div class="tl-title">Secondary Education (CBSE)</div>
+          <div class="tl-sub">Warangal Public School, Hanamkonda, Telangana</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cert-card">
+      <div class="tl-meta">Issued March 2026 · IBM SkillsBuild</div>
+      <div class="tl-title">Getting Started with Artificial Intelligence</div>
+      <div class="tl-sub">Completed foundational coursework on AI concepts, real-world applications, and IBM AI tools.</div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="eyebrow">reach out</div>
+    <h2 class="sec-title">Let's talk</h2>
+    <div class="contact-box">
+      <div class="contact-left">
+        <div style="font-family:var(--mono); font-size:18px; font-weight:700;">Currently open to internships &amp; freelance work.</div>
+        <p>Have a project, internship, or just want to talk software? Send a message below or reach me directly.</p>
+        <div class="contact-list">
+          <a href="mailto:ananthulavyshvitha@gmail.com"><span class="ic">✉</span> ananthulavyshvitha@gmail.com</a>
+          <a href="tel:+918897626699"><span class="ic">☎</span> +91 8897626699</a>
+          <a href="https://github.com/Vyshvitha10" target="_blank" rel="noopener"><span class="ic">⌥</span> github.com/Vyshvitha10</a>
+          <a href="http://www.linkedin.com/in/vyshvitha-ananthula-413b77355" target="_blank" rel="noopener"><span class="ic">in</span> LinkedIn</a>
+        </div>
+      </div>
+      <form id="contactForm">
+        <div class="field">
+          <label for="name">name</label>
+          <input id="name" name="name" type="text" required placeholder="Your name">
+        </div>
+        <div class="field">
+          <label for="email">email</label>
+          <input id="email" name="email" type="email" required placeholder="you@example.com">
+        </div>
+        <div class="field">
+          <label for="message">message</label>
+          <textarea id="message" name="message" rows="4" required placeholder="What's on your mind?"></textarea>
+        </div>
+        <button type="submit" class="submit-btn">send message →</button>
+        <div class="form-note">Opens your email client with this message pre-filled.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    designed &amp; built by Vyshvitha Ananthula · <a href="https://github.com/Vyshvitha10" target="_blank" rel="noopener">github.com/Vyshvitha10</a>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('contactForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
+    const subject = encodeURIComponent('Portfolio contact from ' + name);
+    const body = encodeURIComponent(message + '\n\n— ' + name + ' (' + email + ')');
+    window.location.href = `mailto:ananthulavyshvitha@gmail.com?subject=${subject}&body=${body}`;
+  });
+</script>
+
+</body>
+</html>
