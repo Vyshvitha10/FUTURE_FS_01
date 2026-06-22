@@ -1,0 +1,406 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);font-size:14px}
+.crm-wrap{display:flex;min-height:600px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;background:var(--color-background-primary)}
+.sidebar{width:180px;flex-shrink:0;background:var(--color-background-secondary);border-right:0.5px solid var(--color-border-tertiary);padding:16px 0;display:flex;flex-direction:column}
+.sidebar-logo{padding:0 16px 16px;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:8px}
+.sidebar-logo span{font-weight:500;font-size:15px;color:var(--color-text-primary)}
+.sidebar-logo small{display:block;font-size:11px;color:var(--color-text-tertiary)}
+.nav-item{display:flex;align-items:center;gap:8px;padding:8px 16px;font-size:13px;color:var(--color-text-secondary);cursor:pointer;border-left:2px solid transparent}
+.nav-item.active{color:var(--color-text-primary);background:var(--color-background-primary);border-left-color:var(--color-text-primary);font-weight:500}
+.nav-item:hover:not(.active){background:var(--color-background-tertiary);color:var(--color-text-primary)}
+.nav-item i{font-size:16px}
+.sidebar-bottom{margin-top:auto;padding:12px 16px;border-top:0.5px solid var(--color-border-tertiary);font-size:12px;color:var(--color-text-tertiary);display:flex;align-items:center;gap:6px}
+.main{flex:1;overflow:hidden;display:flex;flex-direction:column}
+.topbar{padding:12px 20px;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:space-between}
+.topbar-title{font-size:15px;font-weight:500;color:var(--color-text-primary)}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:transparent;cursor:pointer;font-size:12px;color:var(--color-text-primary);font-family:var(--font-sans)}
+.btn:hover{background:var(--color-background-secondary)}
+.btn.primary{background:#0f172a;color:#fff;border-color:#0f172a}
+.btn.primary:hover{opacity:0.9}
+.content{flex:1;overflow:auto;padding:16px 20px;display:flex;flex-direction:column;gap:16px}
+.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.metric-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px 14px}
+.metric-label{font-size:11px;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.metric-val{font-size:22px;font-weight:500;color:var(--color-text-primary)}
+.metric-sub{font-size:11px;margin-top:2px}
+.metric-sub.up{color:#059669}
+.metric-sub.down{color:#dc2626}
+.panel-row{display:grid;grid-template-columns:1fr 280px;gap:12px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+.card-header{padding:12px 16px;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+.search-bar{display:flex;align-items:center;gap:8px;padding:8px 16px;border-bottom:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary)}
+.search-bar input{flex:1;background:transparent;border:none;outline:none;font-size:13px;color:var(--color-text-primary);font-family:var(--font-sans)}
+.filter-pills{display:flex;gap:6px;padding:10px 16px;border-bottom:0.5px solid var(--color-border-tertiary);flex-wrap:wrap}
+.pill{padding:4px 10px;border-radius:20px;font-size:11px;border:0.5px solid var(--color-border-tertiary);cursor:pointer;color:var(--color-text-secondary);background:transparent}
+.pill.active{background:var(--color-text-primary);color:var(--color-background-primary);border-color:var(--color-text-primary)}
+.pill:hover:not(.active){background:var(--color-background-secondary)}
+.leads-table{width:100%;border-collapse:collapse}
+.leads-table th{font-size:11px;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.04em;padding:8px 16px;text-align:left;border-bottom:0.5px solid var(--color-border-tertiary);font-weight:400;white-space:nowrap}
+.leads-table td{padding:10px 16px;border-bottom:0.5px solid var(--color-border-tertiary);font-size:13px;color:var(--color-text-primary)}
+.leads-table tr:last-child td{border-bottom:none}
+.leads-table tr:hover td{background:var(--color-background-secondary);cursor:pointer}
+.leads-table tr.selected td{background:var(--color-background-info)}
+.avatar{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0}
+.av-blue{background:#dbeafe;color:#1d4ed8}
+.av-teal{background:#d1fae5;color:#065f46}
+.av-amber{background:#fef3c7;color:#92400e}
+.av-pink{background:#fce7f3;color:#9d174d}
+.av-purple{background:#ede9fe;color:#5b21b6}
+.name-cell{display:flex;align-items:center;gap:8px}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:500}
+.badge-new{background:#f1f5f9;color:#475569}
+.badge-contacted{background:#fef3c7;color:#92400e}
+.badge-converted{background:#d1fae5;color:#065f46}
+.badge-lost{background:#fee2e2;color:#991b1b}
+.source-tag{font-size:11px;color:var(--color-text-tertiary)}
+.detail-panel{display:flex;flex-direction:column}
+.detail-top{padding:16px}
+.detail-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;margin-bottom:10px}
+.detail-name{font-size:15px;font-weight:500;color:var(--color-text-primary)}
+.detail-sub{font-size:12px;color:var(--color-text-secondary);margin-top:2px}
+.detail-section{padding:12px 16px;border-top:0.5px solid var(--color-border-tertiary)}
+.detail-section-title{font-size:11px;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
+.detail-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:12px}
+.detail-row-label{color:var(--color-text-secondary)}
+.detail-row-val{color:var(--color-text-primary);font-weight:500}
+.status-select{width:100%;padding:6px 10px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);font-size:12px;color:var(--color-text-primary);font-family:var(--font-sans);cursor:pointer}
+.notes-area{width:100%;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:8px;font-size:12px;font-family:var(--font-sans);color:var(--color-text-primary);background:var(--color-background-secondary);resize:none;line-height:1.5;min-height:80px}
+.notes-area:focus{outline:none;border-color:var(--color-border-primary)}
+.note-entry{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:8px;margin-bottom:6px;font-size:12px}
+.note-time{font-size:10px;color:var(--color-text-tertiary);margin-top:4px}
+.empty-state{padding:40px;text-align:center;color:var(--color-text-tertiary);font-size:13px}
+.pipeline-bar{display:flex;border-radius:var(--border-radius-md);overflow:hidden;height:8px;gap:2px}
+.pipe-seg{height:100%;border-radius:2px}
+.modal-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;z-index:100;border-radius:var(--border-radius-lg)}
+.modal{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);width:360px;padding:20px}
+.modal-title{font-size:15px;font-weight:500;margin-bottom:16px;color:var(--color-text-primary)}
+.field-group{margin-bottom:12px}
+.field-label{font-size:11px;color:var(--color-text-secondary);margin-bottom:4px;display:block;text-transform:uppercase;letter-spacing:.04em}
+.field-input{width:100%;padding:7px 10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:13px;font-family:var(--font-sans);background:var(--color-background-secondary);color:var(--color-text-primary)}
+.field-input:focus{outline:none;border-color:var(--color-border-primary)}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.toast{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:8px 16px;border-radius:var(--border-radius-md);font-size:12px;z-index:200;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+.relative{position:relative}
+</style>
+
+<h2 class="sr-only">Client Lead Management CRM Dashboard — view, filter, and manage incoming leads with status tracking and notes</h2>
+
+<div class="crm-wrap relative" id="crmWrap">
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <span>LeadBase</span>
+      <small>Admin Panel</small>
+    </div>
+    <div class="nav-item active" onclick="setView('leads')"><i class="ti ti-users" aria-hidden="true"></i> Leads</div>
+    <div class="nav-item" onclick="setView('analytics')"><i class="ti ti-chart-bar" aria-hidden="true"></i> Analytics</div>
+    <div class="nav-item" onclick="setView('settings')"><i class="ti ti-settings" aria-hidden="true"></i> Settings</div>
+    <div class="sidebar-bottom"><i class="ti ti-user-circle" aria-hidden="true"></i> Admin</div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <span class="topbar-title" id="viewTitle">Leads</span>
+      <div class="topbar-right">
+        <input type="text" id="searchInput" placeholder="Search leads…" style="padding:6px 10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:12px;background:var(--color-background-secondary);color:var(--color-text-primary);font-family:var(--font-sans);width:180px" oninput="renderTable()">
+        <button class="btn primary" onclick="openAddModal()"><i class="ti ti-plus" aria-hidden="true" style="font-size:14px"></i> Add Lead</button>
+      </div>
+    </div>
+
+    <div class="content" id="mainContent">
+      <div class="metrics-row">
+        <div class="metric-card">
+          <div class="metric-label">Total leads</div>
+          <div class="metric-val" id="m-total">0</div>
+          <div class="metric-sub up" id="m-total-sub"></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">New</div>
+          <div class="metric-val" id="m-new">0</div>
+          <div class="metric-sub" style="color:var(--color-text-tertiary)">Awaiting contact</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Contacted</div>
+          <div class="metric-val" id="m-contacted">0</div>
+          <div class="metric-sub" style="color:var(--color-text-tertiary)">In follow-up</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Converted</div>
+          <div class="metric-val" id="m-converted">0</div>
+          <div class="metric-sub up" id="m-rate"></div>
+        </div>
+      </div>
+
+      <div class="panel-row">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">All leads</span>
+            <div style="display:flex;gap:6px">
+              <div class="filter-pills" style="padding:0;border:none;margin:0">
+                <span class="pill active" onclick="setFilter('all',this)">All</span>
+                <span class="pill" onclick="setFilter('new',this)">New</span>
+                <span class="pill" onclick="setFilter('contacted',this)">Contacted</span>
+                <span class="pill" onclick="setFilter('converted',this)">Converted</span>
+                <span class="pill" onclick="setFilter('lost',this)">Lost</span>
+              </div>
+            </div>
+          </div>
+          <div style="overflow:auto">
+            <table class="leads-table" id="leadsTable">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Source</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody id="leadsBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card detail-panel" id="detailPanel">
+          <div class="card-header"><span class="card-title">Lead detail</span></div>
+          <div id="detailContent" class="empty-state"><i class="ti ti-cursor-text" style="font-size:24px;display:block;margin-bottom:8px" aria-hidden="true"></i>Select a lead to view details</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay" style="display:none">
+    <div class="modal">
+      <div class="modal-title" id="modalTitle">Add new lead</div>
+      <div class="field-group">
+        <label class="field-label">Full name</label>
+        <input class="field-input" id="f-name" placeholder="e.g. Priya Sharma">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Email</label>
+        <input class="field-input" id="f-email" type="email" placeholder="priya@example.com">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Phone</label>
+        <input class="field-input" id="f-phone" placeholder="+91 98765 43210">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Source</label>
+        <select class="field-input" id="f-source">
+          <option>Contact form</option>
+          <option>LinkedIn</option>
+          <option>Referral</option>
+          <option>Cold outreach</option>
+          <option>Event</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Initial note</label>
+        <textarea class="notes-area" id="f-note" placeholder="What did they enquire about?" rows="2"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeModal()">Cancel</button>
+        <button class="btn primary" onclick="saveLead()">Save lead</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+const COLORS=['av-blue','av-teal','av-amber','av-pink','av-purple'];
+let leads=[
+  {id:1,name:'Arjun Mehta',email:'arjun.mehta@gmail.com',phone:'+91 98001 12345',source:'Contact form',status:'new',date:'2026-06-20',notes:[]},
+  {id:2,name:'Sneha Reddy',email:'sneha.r@outlook.com',phone:'+91 87654 32100',source:'LinkedIn',status:'contacted',date:'2026-06-18',notes:[{text:'Interested in the Pro plan. Needs demo next week.',time:'Jun 18, 10:30 AM'}]},
+  {id:3,name:'Vikram Nair',email:'vnair@techworks.in',phone:'+91 99887 65432',source:'Referral',status:'converted',date:'2026-06-15',notes:[{text:'Signed 6-month contract. ₹1.2L/year.',time:'Jun 16, 2:00 PM'},{text:'Onboarding call scheduled for Jun 22.',time:'Jun 17, 9:15 AM'}]},
+  {id:4,name:'Priya Iyer',email:'priya.iyer@startup.io',phone:'+91 91234 56789',source:'Cold outreach',status:'contacted',date:'2026-06-17',notes:[{text:'Sent proposal PDF. Awaiting reply.',time:'Jun 17, 4:45 PM'}]},
+  {id:5,name:'Rohan Kulkarni',email:'rohan.k@design.co',phone:'+91 80001 99988',source:'Event',status:'new',date:'2026-06-21',notes:[]},
+  {id:6,name:'Aarti Singh',email:'aarti.singh@brand.com',phone:'+91 99001 22334',source:'Contact form',status:'lost',date:'2026-06-10',notes:[{text:'Budget too low for our offering at this time.',time:'Jun 12, 11:00 AM'}]},
+  {id:7,name:'Deepak Verma',email:'deepak.v@consult.org',phone:'+91 95555 66677',source:'LinkedIn',status:'converted',date:'2026-06-08',notes:[{text:'Paid upfront. Excellent fit.',time:'Jun 09, 3:30 PM'}]},
+];
+let nextId=8;
+let selectedId=null;
+let filter='all';
+
+function initials(name){return name.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase()}
+function avatarColor(name){const s=name.charCodeAt(0)+name.charCodeAt(name.length-1);return COLORS[s%COLORS.length]}
+function fmtDate(d){const dt=new Date(d);return dt.toLocaleDateString('en-IN',{day:'2-digit',month:'short'})}
+function statusBadge(s){const map={new:'badge-new',contacted:'badge-contacted',converted:'badge-converted',lost:'badge-lost'};return `<span class="badge ${map[s]||'badge-new'}">${s.charAt(0).toUpperCase()+s.slice(1)}</span>`}
+function nowStr(){return new Date().toLocaleString('en-IN',{month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit'})}
+
+function updateMetrics(){
+  const t=leads.length,nw=leads.filter(l=>l.status==='new').length,ct=leads.filter(l=>l.status==='contacted').length,cv=leads.filter(l=>l.status==='converted').length;
+  document.getElementById('m-total').textContent=t;
+  document.getElementById('m-new').textContent=nw;
+  document.getElementById('m-contacted').textContent=ct;
+  document.getElementById('m-converted').textContent=cv;
+  document.getElementById('m-rate').textContent=t>0?Math.round(cv/t*100)+'% conversion rate':'—';
+}
+
+function getFiltered(){
+  const q=(document.getElementById('searchInput')||{}).value||'';
+  return leads.filter(l=>{
+    const matchFilter=filter==='all'||l.status===filter;
+    const matchSearch=!q||l.name.toLowerCase().includes(q.toLowerCase())||l.email.toLowerCase().includes(q.toLowerCase())||l.source.toLowerCase().includes(q.toLowerCase());
+    return matchFilter&&matchSearch;
+  });
+}
+
+function renderTable(){
+  const filtered=getFiltered();
+  const tbody=document.getElementById('leadsBody');
+  if(!tbody)return;
+  if(filtered.length===0){tbody.innerHTML=`<tr><td colspan="5" style="padding:32px;text-align:center;color:var(--color-text-tertiary);font-size:13px">No leads match your filter</td></tr>`;return;}
+  tbody.innerHTML=filtered.map(l=>`
+    <tr onclick="selectLead(${l.id})" class="${selectedId===l.id?'selected':''}">
+      <td><div class="name-cell"><div class="avatar ${avatarColor(l.name)}">${initials(l.name)}</div>${l.name}</div></td>
+      <td style="color:var(--color-text-secondary)">${l.email}</td>
+      <td><span class="source-tag">${l.source}</span></td>
+      <td>${statusBadge(l.status)}</td>
+      <td style="color:var(--color-text-tertiary);font-size:12px">${fmtDate(l.date)}</td>
+    </tr>`).join('');
+}
+
+function selectLead(id){
+  selectedId=id;
+  const lead=leads.find(l=>l.id===id);
+  if(!lead)return;
+  renderTable();
+  const dp=document.getElementById('detailContent');
+  dp.className='';
+  dp.innerHTML=`
+    <div class="detail-top">
+      <div class="detail-avatar ${avatarColor(lead.name)}">${initials(lead.name)}</div>
+      <div class="detail-name">${lead.name}</div>
+      <div class="detail-sub">${lead.email}</div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">Contact info</div>
+      <div class="detail-row"><span class="detail-row-label">Phone</span><span class="detail-row-val">${lead.phone||'—'}</span></div>
+      <div class="detail-row"><span class="detail-row-label">Source</span><span class="detail-row-val">${lead.source}</span></div>
+      <div class="detail-row"><span class="detail-row-label">Added</span><span class="detail-row-val">${fmtDate(lead.date)}</span></div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">Status</div>
+      <select class="status-select" onchange="updateStatus(${lead.id},this.value)">
+        ${['new','contacted','converted','lost'].map(s=>`<option value="${s}"${lead.status===s?' selected':''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`).join('')}
+      </select>
+    </div>
+    <div class="detail-section" style="flex:1;display:flex;flex-direction:column">
+      <div class="detail-section-title">Notes & follow-ups</div>
+      <div id="notesList" style="margin-bottom:8px">
+        ${lead.notes.length===0?'<div style="font-size:12px;color:var(--color-text-tertiary);margin-bottom:8px">No notes yet</div>':lead.notes.map(n=>`<div class="note-entry">${n.text}<div class="note-time">${n.time}</div></div>`).join('')}
+      </div>
+      <textarea class="notes-area" id="noteInput" placeholder="Add a follow-up note…" rows="3"></textarea>
+      <button class="btn" style="margin-top:6px;font-size:12px" onclick="addNote(${lead.id})"><i class="ti ti-send" aria-hidden="true" style="font-size:13px"></i> Add note</button>
+    </div>
+  `;
+}
+
+function updateStatus(id,newStatus){
+  const lead=leads.find(l=>l.id===id);
+  if(!lead)return;
+  lead.status=newStatus;
+  updateMetrics();
+  renderTable();
+  showToast('Status updated to '+newStatus);
+}
+
+function addNote(id){
+  const lead=leads.find(l=>l.id===id);
+  const inp=document.getElementById('noteInput');
+  if(!lead||!inp||!inp.value.trim())return;
+  lead.notes.push({text:inp.value.trim(),time:nowStr()});
+  showToast('Note added');
+  selectLead(id);
+}
+
+function setFilter(f,el){
+  filter=f;
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  renderTable();
+}
+
+function openAddModal(){
+  document.getElementById('modalOverlay').style.display='flex';
+  document.getElementById('f-name').value='';
+  document.getElementById('f-email').value='';
+  document.getElementById('f-phone').value='';
+  document.getElementById('f-note').value='';
+}
+function closeModal(){document.getElementById('modalOverlay').style.display='none';}
+function saveLead(){
+  const name=document.getElementById('f-name').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  if(!name||!email){showToast('Name and email are required');return;}
+  const note=document.getElementById('f-note').value.trim();
+  const lead={
+    id:nextId++,name,email,
+    phone:document.getElementById('f-phone').value.trim(),
+    source:document.getElementById('f-source').value,
+    status:'new',
+    date:new Date().toISOString().slice(0,10),
+    notes:note?[{text:note,time:nowStr()}]:[]
+  };
+  leads.unshift(lead);
+  closeModal();
+  updateMetrics();
+  renderTable();
+  selectLead(lead.id);
+  showToast('Lead added: '+name);
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+function setView(v){
+  const titles={leads:'Leads',analytics:'Analytics',settings:'Settings'};
+  document.getElementById('viewTitle').textContent=titles[v]||v;
+  if(v!=='leads'){
+    const mc=document.getElementById('mainContent');
+    if(v==='analytics'){
+      mc.innerHTML=`<div style="padding:20px 0;color:var(--color-text-secondary);font-size:13px">
+        <div class="metrics-row" style="margin-bottom:16px">
+          <div class="metric-card"><div class="metric-label">Total leads</div><div class="metric-val">${leads.length}</div></div>
+          <div class="metric-card"><div class="metric-label">Conversion rate</div><div class="metric-val">${Math.round(leads.filter(l=>l.status==='converted').length/leads.length*100)}%</div></div>
+          <div class="metric-card"><div class="metric-label">Top source</div><div class="metric-val" style="font-size:16px">Contact form</div></div>
+          <div class="metric-card"><div class="metric-label">Lost leads</div><div class="metric-val">${leads.filter(l=>l.status==='lost').length}</div></div>
+        </div>
+        <div class="card" style="padding:16px">
+          <div class="card-title" style="margin-bottom:12px;font-size:13px;font-weight:500;color:var(--color-text-primary)">Pipeline breakdown</div>
+          ${['new','contacted','converted','lost'].map(s=>{
+            const c=leads.filter(l=>l.status===s).length;
+            const pct=Math.round(c/leads.length*100);
+            const colors={new:'#94a3b8',contacted:'#f59e0b',converted:'#10b981',lost:'#f87171'};
+            return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+              <div style="width:80px;font-size:12px;color:var(--color-text-secondary);text-transform:capitalize">${s}</div>
+              <div style="flex:1;height:8px;background:var(--color-background-secondary);border-radius:4px;overflow:hidden">
+                <div style="height:100%;width:${pct}%;background:${colors[s]};border-radius:4px;transition:width .5s"></div>
+              </div>
+              <div style="width:36px;text-align:right;font-size:12px;font-weight:500;color:var(--color-text-primary)">${c}</div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>`;
+    } else {
+      mc.innerHTML=`<div style="padding:40px;text-align:center;color:var(--color-text-tertiary);font-size:13px"><i class="ti ti-settings" style="font-size:32px;display:block;margin-bottom:8px" aria-hidden="true"></i>Settings panel coming soon</div>`;
+    }
+    return;
+  }
+  location.reload();
+}
+
+updateMetrics();
+renderTable();
+</script>
