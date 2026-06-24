@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeadBase CRM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;
+  --surface:#181c27;
+  --surface2:#1e2332;
+  --border:#2a2f42;
+  --border2:#333a52;
+  --text:#f0f2f8;
+  --text2:#8b92a8;
+  --text3:#5a6075;
+  --accent:#6366f1;
+  --accent2:#818cf8;
+  --accent-glow:rgba(99,102,241,0.18);
+  --green:#10b981;
+  --green-bg:rgba(16,185,129,0.12);
+  --amber:#f59e0b;
+  --amber-bg:rgba(245,158,11,0.12);
+  --red:#ef4444;
+  --red-bg:rgba(239,68,68,0.12);
+  --slate:#64748b;
+  --slate-bg:rgba(100,116,139,0.12);
+}
+body{font-family:'Inter',sans-serif;font-size:14px;background:var(--bg);color:var(--text)}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:10px}
+
+/* ── Layout ── */
+.crm-wrap{display:flex;min-height:680px;border-radius:16px;overflow:hidden;background:var(--surface);border:1px solid var(--border);box-shadow:0 24px 80px rgba(0,0,0,0.5)}
+
+/* ── Sidebar ── */
+.sidebar{width:200px;flex-shrink:0;background:var(--bg);border-right:1px solid var(--border);padding:0;display:flex;flex-direction:column}
+.sidebar-logo{padding:20px 18px 16px;border-bottom:1px solid var(--border)}
+.logo-mark{display:flex;align-items:center;gap:10px}
+.logo-icon{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--accent),#a78bfa);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 4px 12px rgba(99,102,241,0.4)}
+.logo-text span{font-weight:600;font-size:14px;color:var(--text);display:block;line-height:1.1}
+.logo-text small{font-size:10px;color:var(--text3);letter-spacing:.05em;text-transform:uppercase;font-weight:500}
+.nav-section{padding:12px 10px 0;flex:1}
+.nav-label{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;font-weight:600;padding:0 8px;margin-bottom:6px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:9px 10px;font-size:13px;color:var(--text2);cursor:pointer;border-radius:8px;margin-bottom:2px;transition:all .15s;font-weight:500}
+.nav-item i{font-size:17px;flex-shrink:0}
+.nav-item.active{color:var(--accent2);background:var(--accent-glow)}
+.nav-item:hover:not(.active){background:var(--surface);color:var(--text)}
+.sidebar-bottom{padding:14px 10px;border-top:1px solid var(--border)}
+.user-row{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:background .15s}
+.user-row:hover{background:var(--surface)}
+.user-avatar{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#6366f1,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;flex-shrink:0}
+.user-info span{font-size:12px;font-weight:500;color:var(--text);display:block;line-height:1.2}
+.user-info small{font-size:10px;color:var(--text3)}
+
+/* ── Main ── */
+.main{flex:1;overflow:hidden;display:flex;flex-direction:column;background:var(--surface)}
+
+/* ── Topbar ── */
+.topbar{padding:14px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--surface)}
+.topbar-title{font-size:16px;font-weight:600;color:var(--text)}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.search-wrap{position:relative}
+.search-wrap i{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:15px}
+.search-input{padding:7px 12px 7px 32px;border:1px solid var(--border);border-radius:9px;font-size:12px;background:var(--surface2);color:var(--text);font-family:'Inter',sans-serif;width:200px;transition:border .15s}
+.search-input::placeholder{color:var(--text3)}
+.search-input:focus{outline:none;border-color:var(--accent);background:var(--bg)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:9px;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:12px;color:var(--text2);font-family:'Inter',sans-serif;font-weight:500;transition:all .15s}
+.btn:hover{background:var(--surface2);color:var(--text)}
+.btn.primary{background:linear-gradient(135deg,var(--accent),#818cf8);color:#fff;border-color:transparent;box-shadow:0 4px 14px rgba(99,102,241,0.35)}
+.btn.primary:hover{opacity:.9;box-shadow:0 6px 18px rgba(99,102,241,0.45)}
+.btn i{font-size:14px}
+
+/* ── Content ── */
+.content{flex:1;overflow:auto;padding:18px 22px;display:flex;flex-direction:column;gap:16px}
+
+/* ── Metric cards ── */
+.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.metric-card{background:var(--surface2);border-radius:12px;padding:16px 18px;border:1px solid var(--border);position:relative;overflow:hidden}
+.metric-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0}
+.metric-card:nth-child(1)::before{background:linear-gradient(90deg,var(--accent),#a78bfa)}
+.metric-card:nth-child(2)::before{background:linear-gradient(90deg,var(--slate),#94a3b8)}
+.metric-card:nth-child(3)::before{background:linear-gradient(90deg,var(--amber),#fbbf24)}
+.metric-card:nth-child(4)::before{background:linear-gradient(90deg,var(--green),#34d399)}
+.metric-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:17px}
+.mi-indigo{background:var(--accent-glow);color:var(--accent2)}
+.mi-slate{background:var(--slate-bg);color:var(--slate)}
+.mi-amber{background:var(--amber-bg);color:var(--amber)}
+.mi-green{background:var(--green-bg);color:var(--green)}
+.metric-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;font-weight:600}
+.metric-val{font-size:26px;font-weight:700;color:var(--text);line-height:1}
+.metric-sub{font-size:11px;margin-top:5px;font-weight:500}
+.metric-sub.up{color:var(--green)}
+.metric-sub.down{color:var(--red)}
+.metric-sub.neutral{color:var(--text3)}
+
+/* ── Panel row ── */
+.panel-row{display:grid;grid-template-columns:1fr 290px;gap:14px;flex:1;min-height:0}
+.card{background:var(--surface2);border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.card-header{padding:13px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--surface2);flex-shrink:0}
+.card-title{font-size:13px;font-weight:600;color:var(--text)}
+
+/* ── Filter pills ── */
+.filter-pills{display:flex;gap:5px}
+.pill{padding:4px 11px;border-radius:20px;font-size:11px;border:1px solid var(--border);cursor:pointer;color:var(--text2);background:transparent;font-weight:500;transition:all .15s}
+.pill.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 2px 8px rgba(99,102,241,0.35)}
+.pill:hover:not(.active){background:var(--surface);color:var(--text)}
+
+/* ── Table ── */
+.table-wrap{overflow:auto;flex:1}
+.leads-table{width:100%;border-collapse:collapse}
+.leads-table th{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;padding:10px 18px;text-align:left;border-bottom:1px solid var(--border);font-weight:600;white-space:nowrap;background:var(--surface2)}
+.leads-table td{padding:11px 18px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text);transition:background .1s}
+.leads-table tr:last-child td{border-bottom:none}
+.leads-table tr:hover td{background:rgba(99,102,241,0.05);cursor:pointer}
+.leads-table tr.selected td{background:var(--accent-glow)}
+
+/* ── Avatar ── */
+.avatar{width:30px;height:30px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.av-blue{background:rgba(59,130,246,0.2);color:#60a5fa}
+.av-teal{background:rgba(16,185,129,0.2);color:#34d399}
+.av-amber{background:rgba(245,158,11,0.2);color:#fbbf24}
+.av-pink{background:rgba(236,72,153,0.2);color:#f472b6}
+.av-purple{background:rgba(139,92,246,0.2);color:#a78bfa}
+.name-cell{display:flex;align-items:center;gap:10px}
+.name-text{font-weight:500}
+
+/* ── Badges ── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
+.badge::before{content:'';width:5px;height:5px;border-radius:50%;display:inline-block}
+.badge-new{background:var(--slate-bg);color:#94a3b8}.badge-new::before{background:#94a3b8}
+.badge-contacted{background:var(--amber-bg);color:var(--amber)}.badge-contacted::before{background:var(--amber)}
+.badge-converted{background:var(--green-bg);color:var(--green)}.badge-converted::before{background:var(--green)}
+.badge-lost{background:var(--red-bg);color:var(--red)}.badge-lost::before{background:var(--red)}
+
+.source-tag{font-size:11px;color:var(--text3);background:var(--surface);border:1px solid var(--border);padding:2px 8px;border-radius:6px;font-weight:500}
+
+/* ── Detail panel ── */
+.detail-panel{display:flex;flex-direction:column}
+.detail-top{padding:18px;background:linear-gradient(160deg,rgba(99,102,241,0.1) 0%,transparent 60%)}
+.detail-avatar{width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;margin-bottom:12px;box-shadow:0 4px 16px rgba(0,0,0,0.3)}
+.detail-name{font-size:16px;font-weight:600;color:var(--text)}
+.detail-sub{font-size:12px;color:var(--text2);margin-top:3px}
+.detail-section{padding:13px 18px;border-top:1px solid var(--border)}
+.detail-section-title{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;font-weight:700}
+.detail-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;font-size:12px}
+.detail-row-label{color:var(--text2)}
+.detail-row-val{color:var(--text);font-weight:600;font-size:12px}
+
+.status-select{width:100%;padding:8px 10px;border-radius:9px;border:1px solid var(--border);background:var(--surface);font-size:12px;color:var(--text);font-family:'Inter',sans-serif;cursor:pointer;transition:border .15s}
+.status-select:focus{outline:none;border-color:var(--accent)}
+.status-select option{background:var(--bg)}
+
+.notes-area{width:100%;border:1px solid var(--border);border-radius:9px;padding:9px 11px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);background:var(--surface);resize:none;line-height:1.6;min-height:76px;transition:border .15s}
+.notes-area::placeholder{color:var(--text3)}
+.notes-area:focus{outline:none;border-color:var(--accent)}
+
+.note-entry{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 11px;margin-bottom:6px;font-size:12px;color:var(--text2);line-height:1.5}
+.note-time{font-size:10px;color:var(--text3);margin-top:5px;font-weight:500}
+
+.empty-state{padding:40px 20px;text-align:center;color:var(--text3);font-size:13px;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.empty-state i{font-size:32px;color:var(--text3)}
+
+/* ── Modal ── */
+.modal-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.65);display:flex;align-items:center;justify-content:center;z-index:100;border-radius:16px;backdrop-filter:blur(4px)}
+.modal{background:var(--surface2);border:1px solid var(--border2);border-radius:16px;width:380px;padding:24px;box-shadow:0 32px 80px rgba(0,0,0,0.6)}
+.modal-title{font-size:16px;font-weight:700;margin-bottom:20px;color:var(--text)}
+.field-group{margin-bottom:14px}
+.field-label{font-size:10px;color:var(--text3);margin-bottom:5px;display:block;text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.field-input{width:100%;padding:9px 11px;border:1px solid var(--border);border-radius:9px;font-size:13px;font-family:'Inter',sans-serif;background:var(--surface);color:var(--text);transition:border .15s}
+.field-input::placeholder{color:var(--text3)}
+.field-input:focus{outline:none;border-color:var(--accent)}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
+
+/* ── Toast ── */
+.toast{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:9px 18px;border-radius:10px;font-size:12px;font-weight:600;z-index:200;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(99,102,241,0.45)}
+.toast.show{opacity:1}
+
+.relative{position:relative}
+</style>
+
+<h2 class="sr-only">Client Lead Management CRM Dashboard</h2>
+
+<div class="crm-wrap relative" id="crmWrap">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <div class="logo-icon">L</div>
+        <div class="logo-text">
+          <span>LeadBase</span>
+          <small>Admin Panel</small>
+        </div>
+      </div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">Menu</div>
+      <div class="nav-item active" onclick="setView('leads')"><i class="ti ti-users"></i> Leads</div>
+      <div class="nav-item" onclick="setView('analytics')"><i class="ti ti-chart-bar"></i> Analytics</div>
+      <div class="nav-item" onclick="setView('settings')"><i class="ti ti-settings"></i> Settings</div>
+    </div>
+    <div class="sidebar-bottom">
+      <div class="user-row">
+        <div class="user-avatar">A</div>
+        <div class="user-info">
+          <span>Admin</span>
+          <small>admin@leadbase.io</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <span class="topbar-title" id="viewTitle">Leads</span>
+      <div class="topbar-right">
+        <div class="search-wrap">
+          <i class="ti ti-search"></i>
+          <input type="text" id="searchInput" class="search-input" placeholder="Search leads…" oninput="renderTable()">
+        </div>
+        <button class="btn primary" onclick="openAddModal()"><i class="ti ti-plus"></i> Add Lead</button>
+      </div>
+    </div>
+
+    <div class="content" id="mainContent">
+      <!-- Metric cards -->
+      <div class="metrics-row">
+        <div class="metric-card">
+          <div class="metric-icon mi-indigo"><i class="ti ti-users"></i></div>
+          <div class="metric-label">Total Leads</div>
+          <div class="metric-val" id="m-total">0</div>
+          <div class="metric-sub up" id="m-total-sub"></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon mi-slate"><i class="ti ti-user-plus"></i></div>
+          <div class="metric-label">New</div>
+          <div class="metric-val" id="m-new">0</div>
+          <div class="metric-sub neutral">Awaiting contact</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon mi-amber"><i class="ti ti-phone"></i></div>
+          <div class="metric-label">Contacted</div>
+          <div class="metric-val" id="m-contacted">0</div>
+          <div class="metric-sub neutral">In follow-up</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon mi-green"><i class="ti ti-check"></i></div>
+          <div class="metric-label">Converted</div>
+          <div class="metric-val" id="m-converted">0</div>
+          <div class="metric-sub up" id="m-rate"></div>
+        </div>
+      </div>
+
+      <!-- Panel row -->
+      <div class="panel-row">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">All Leads</span>
+            <div class="filter-pills">
+              <span class="pill active" onclick="setFilter('all',this)">All</span>
+              <span class="pill" onclick="setFilter('new',this)">New</span>
+              <span class="pill" onclick="setFilter('contacted',this)">Contacted</span>
+              <span class="pill" onclick="setFilter('converted',this)">Converted</span>
+              <span class="pill" onclick="setFilter('lost',this)">Lost</span>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="leads-table" id="leadsTable">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Source</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody id="leadsBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card detail-panel" id="detailPanel">
+          <div class="card-header"><span class="card-title">Lead Detail</span></div>
+          <div id="detailContent" class="empty-state">
+            <i class="ti ti-cursor-text"></i>
+            Select a lead to view details
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modalOverlay" style="display:none">
+    <div class="modal">
+      <div class="modal-title">Add New Lead</div>
+      <div class="field-group">
+        <label class="field-label">Full name</label>
+        <input class="field-input" id="f-name" placeholder="e.g. Priya Sharma">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Email</label>
+        <input class="field-input" id="f-email" type="email" placeholder="priya@example.com">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Phone</label>
+        <input class="field-input" id="f-phone" placeholder="+91 98765 43210">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Source</label>
+        <select class="field-input" id="f-source">
+          <option>Contact form</option>
+          <option>LinkedIn</option>
+          <option>Referral</option>
+          <option>Cold outreach</option>
+          <option>Event</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Initial note</label>
+        <textarea class="notes-area" id="f-note" placeholder="What did they enquire about?" rows="2"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeModal()">Cancel</button>
+        <button class="btn primary" onclick="saveLead()"><i class="ti ti-device-floppy"></i> Save Lead</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+const COLORS=['av-blue','av-teal','av-amber','av-pink','av-purple'];
+let leads=[
+  {id:1,name:'Arjun Mehta',email:'arjun.mehta@gmail.com',phone:'+91 98001 12345',source:'Contact form',status:'new',date:'2026-06-20',notes:[]},
+  {id:2,name:'Sneha Reddy',email:'sneha.r@outlook.com',phone:'+91 87654 32100',source:'LinkedIn',status:'contacted',date:'2026-06-18',notes:[{text:'Interested in the Pro plan. Needs demo next week.',time:'Jun 18, 10:30 AM'}]},
+  {id:3,name:'Vikram Nair',email:'vnair@techworks.in',phone:'+91 99887 65432',source:'Referral',status:'converted',date:'2026-06-15',notes:[{text:'Signed 6-month contract. ₹1.2L/year.',time:'Jun 16, 2:00 PM'},{text:'Onboarding call scheduled for Jun 22.',time:'Jun 17, 9:15 AM'}]},
+  {id:4,name:'Priya Iyer',email:'priya.iyer@startup.io',phone:'+91 91234 56789',source:'Cold outreach',status:'contacted',date:'2026-06-17',notes:[{text:'Sent proposal PDF. Awaiting reply.',time:'Jun 17, 4:45 PM'}]},
+  {id:5,name:'Rohan Kulkarni',email:'rohan.k@design.co',phone:'+91 80001 99988',source:'Event',status:'new',date:'2026-06-21',notes:[]},
+  {id:6,name:'Aarti Singh',email:'aarti.singh@brand.com',phone:'+91 99001 22334',source:'Contact form',status:'lost',date:'2026-06-10',notes:[{text:'Budget too low for our offering at this time.',time:'Jun 12, 11:00 AM'}]},
+  {id:7,name:'Deepak Verma',email:'deepak.v@consult.org',phone:'+91 95555 66677',source:'LinkedIn',status:'converted',date:'2026-06-08',notes:[{text:'Paid upfront. Excellent fit.',time:'Jun 09, 3:30 PM'}]},
+];
+let nextId=8;
+let selectedId=null;
+let filter='all';
+
+function initials(name){return name.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase()}
+function avatarColor(name){const s=name.charCodeAt(0)+name.charCodeAt(name.length-1);return COLORS[s%COLORS.length]}
+function fmtDate(d){const dt=new Date(d);return dt.toLocaleDateString('en-IN',{day:'2-digit',month:'short'})}
+function statusBadge(s){const map={new:'badge-new',contacted:'badge-contacted',converted:'badge-converted',lost:'badge-lost'};const labels={new:'New',contacted:'Contacted',converted:'Converted',lost:'Lost'};return `<span class="badge ${map[s]||'badge-new'}">${labels[s]||s}</span>`}
+function nowStr(){return new Date().toLocaleString('en-IN',{month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit'})}
+
+function updateMetrics(){
+  const t=leads.length,nw=leads.filter(l=>l.status==='new').length,ct=leads.filter(l=>l.status==='contacted').length,cv=leads.filter(l=>l.status==='converted').length;
+  document.getElementById('m-total').textContent=t;
+  document.getElementById('m-new').textContent=nw;
+  document.getElementById('m-contacted').textContent=ct;
+  document.getElementById('m-converted').textContent=cv;
+  document.getElementById('m-total-sub').textContent=t+' total in pipeline';
+  document.getElementById('m-rate').textContent=t>0?Math.round(cv/t*100)+'% conversion rate':'—';
+}
+
+function getFiltered(){
+  const q=(document.getElementById('searchInput')||{}).value||'';
+  return leads.filter(l=>{
+    const matchFilter=filter==='all'||l.status===filter;
+    const matchSearch=!q||l.name.toLowerCase().includes(q.toLowerCase())||l.email.toLowerCase().includes(q.toLowerCase())||l.source.toLowerCase().includes(q.toLowerCase());
+    return matchFilter&&matchSearch;
+  });
+}
+
+function renderTable(){
+  const filtered=getFiltered();
+  const tbody=document.getElementById('leadsBody');
+  if(!tbody)return;
+  if(filtered.length===0){tbody.innerHTML=`<tr><td colspan="5" style="padding:40px;text-align:center;color:var(--text3);font-size:13px">No leads match your filter</td></tr>`;return;}
+  tbody.innerHTML=filtered.map(l=>`
+    <tr onclick="selectLead(${l.id})" class="${selectedId===l.id?'selected':''}">
+      <td><div class="name-cell"><div class="avatar ${avatarColor(l.name)}">${initials(l.name)}</div><span class="name-text">${l.name}</span></div></td>
+      <td style="color:var(--text2)">${l.email}</td>
+      <td><span class="source-tag">${l.source}</span></td>
+      <td>${statusBadge(l.status)}</td>
+      <td style="color:var(--text3);font-size:12px">${fmtDate(l.date)}</td>
+    </tr>`).join('');
+}
+
+function selectLead(id){
+  selectedId=id;
+  const lead=leads.find(l=>l.id===id);
+  if(!lead)return;
+  renderTable();
+  const dp=document.getElementById('detailContent');
+  dp.className='';
+  dp.style.display='flex';
+  dp.style.flexDirection='column';
+  dp.style.flex='1';
+  dp.style.overflow='auto';
+  dp.innerHTML=`
+    <div class="detail-top">
+      <div class="detail-avatar ${avatarColor(lead.name)}">${initials(lead.name)}</div>
+      <div class="detail-name">${lead.name}</div>
+      <div class="detail-sub">${lead.email}</div>
+      <div style="margin-top:10px">${statusBadge(lead.status)}</div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">Contact Info</div>
+      <div class="detail-row"><span class="detail-row-label">Phone</span><span class="detail-row-val">${lead.phone||'—'}</span></div>
+      <div class="detail-row"><span class="detail-row-label">Source</span><span class="detail-row-val">${lead.source}</span></div>
+      <div class="detail-row"><span class="detail-row-label">Added</span><span class="detail-row-val">${fmtDate(lead.date)}</span></div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">Status</div>
+      <select class="status-select" onchange="updateStatus(${lead.id},this.value)">
+        ${['new','contacted','converted','lost'].map(s=>`<option value="${s}"${lead.status===s?' selected':''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`).join('')}
+      </select>
+    </div>
+    <div class="detail-section" style="flex:1;display:flex;flex-direction:column">
+      <div class="detail-section-title">Notes & Follow-ups</div>
+      <div id="notesList" style="margin-bottom:8px">
+        ${lead.notes.length===0?'<div style="font-size:12px;color:var(--text3);margin-bottom:8px">No notes yet</div>':lead.notes.map(n=>`<div class="note-entry">${n.text}<div class="note-time">${n.time}</div></div>`).join('')}
+      </div>
+      <textarea class="notes-area" id="noteInput" placeholder="Add a follow-up note…" rows="3"></textarea>
+      <button class="btn" style="margin-top:7px;font-size:12px" onclick="addNote(${lead.id})"><i class="ti ti-send" style="font-size:13px"></i> Add Note</button>
+    </div>
+  `;
+}
+
+function updateStatus(id,newStatus){
+  const lead=leads.find(l=>l.id===id);
+  if(!lead)return;
+  lead.status=newStatus;
+  updateMetrics();
+  renderTable();
+  showToast('Status updated to '+newStatus);
+}
+
+function addNote(id){
+  const lead=leads.find(l=>l.id===id);
+  const inp=document.getElementById('noteInput');
+  if(!lead||!inp||!inp.value.trim())return;
+  lead.notes.push({text:inp.value.trim(),time:nowStr()});
+  showToast('Note added');
+  selectLead(id);
+}
+
+function setFilter(f,el){
+  filter=f;
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  renderTable();
+}
+
+function openAddModal(){
+  document.getElementById('modalOverlay').style.display='flex';
+  document.getElementById('f-name').value='';
+  document.getElementById('f-email').value='';
+  document.getElementById('f-phone').value='';
+  document.getElementById('f-note').value='';
+}
+function closeModal(){document.getElementById('modalOverlay').style.display='none';}
+function saveLead(){
+  const name=document.getElementById('f-name').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  if(!name||!email){showToast('Name and email are required');return;}
+  const note=document.getElementById('f-note').value.trim();
+  const lead={
+    id:nextId++,name,email,
+    phone:document.getElementById('f-phone').value.trim(),
+    source:document.getElementById('f-source').value,
+    status:'new',
+    date:new Date().toISOString().slice(0,10),
+    notes:note?[{text:note,time:nowStr()}]:[]
+  };
+  leads.unshift(lead);
+  closeModal();
+  updateMetrics();
+  renderTable();
+  selectLead(lead.id);
+  showToast('Lead added: '+name);
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+function setView(v){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  const titles={leads:'Leads',analytics:'Analytics',settings:'Settings'};
+  document.getElementById('viewTitle').textContent=titles[v]||v;
+  if(v!=='leads'){
+    const mc=document.getElementById('mainContent');
+    if(v==='analytics'){
+      mc.innerHTML=`<div style="display:flex;flex-direction:column;gap:16px">
+        <div class="metrics-row">
+          <div class="metric-card"><div class="metric-icon mi-indigo"><i class="ti ti-users"></i></div><div class="metric-label">Total leads</div><div class="metric-val">${leads.length}</div></div>
+          <div class="metric-card"><div class="metric-icon mi-green"><i class="ti ti-trending-up"></i></div><div class="metric-label">Conversion rate</div><div class="metric-val">${Math.round(leads.filter(l=>l.status==='converted').length/leads.length*100)}%</div></div>
+          <div class="metric-card"><div class="metric-icon mi-amber"><i class="ti ti-star"></i></div><div class="metric-label">Top source</div><div class="metric-val" style="font-size:18px">Contact form</div></div>
+          <div class="metric-card"><div class="metric-icon" style="background:var(--red-bg);color:var(--red)"><i class="ti ti-user-x"></i></div><div class="metric-label">Lost leads</div><div class="metric-val">${leads.filter(l=>l.status==='lost').length}</div></div>
+        </div>
+        <div class="card" style="padding:20px">
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:16px">Pipeline Breakdown</div>
+          ${['new','contacted','converted','lost'].map(s=>{
+            const c=leads.filter(l=>l.status===s).length;
+            const pct=Math.round(c/leads.length*100);
+            const colors={new:'#64748b',contacted:'#f59e0b',converted:'#10b981',lost:'#ef4444'};
+            const label=s.charAt(0).toUpperCase()+s.slice(1);
+            return `<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+              <div style="width:80px;font-size:12px;color:var(--text2);font-weight:500">${label}</div>
+              <div style="flex:1;height:8px;background:var(--surface);border-radius:4px;overflow:hidden">
+                <div style="height:100%;width:${pct}%;background:${colors[s]};border-radius:4px;transition:width .6s ease"></div>
+              </div>
+              <div style="width:24px;text-align:center;font-size:12px;font-weight:700;color:var(--text)">${c}</div>
+              <div style="width:36px;text-align:right;font-size:11px;color:var(--text3)">${pct}%</div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>`;
+    } else {
+      mc.innerHTML=`<div class="card" style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:var(--text3)"><i class="ti ti-settings" style="font-size:40px;color:var(--text3)"></i><div style="font-size:14px;font-weight:500">Settings coming soon</div><div style="font-size:12px">Configure your workspace, team, and integrations here.</div></div>`;
+    }
+    return;
+  }
+  location.reload();
+}
+
+updateMetrics();
+renderTable();
+</script>
+</html>
